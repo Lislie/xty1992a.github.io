@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="../css/reset.css">
+  <style>
+    #wrap{
+      width: 960px;
+      height: 600px;
+      position: relative;
+      margin: 200px auto;
+      border: 1px solid lightblue;
+    }
+    #cell{
+	  margin: 0;
+	  padding: 0;
+	  list-style: none;
+      transform-style: preserve-3d;
+      transition: all 1s;
+      position: relative;
+      transform: rotateX(-30deg);
+      height: 100%;
+      width: 100%;
+    }
+    .card{
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .card img{
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="wrap">
+  <ul id="cell"></ul>
+</div>
+
+<script type="text/javascript">
+  var wrap = document.getElementById('wrap')
+  var cell = document.getElementById('cell')
+  var urlList = getUrl(6)
+  put(cell, urlList)
+
+  function put(wrap, urlList) {
+    var htmlStr = ''
+    for (var i = 0; i < urlList.length; i++) {
+      htmlStr += '<li class="card"><img src="'+(urlList[i])+'"></li>'
+    }
+    wrap.innerHTML = htmlStr
+    console.log(wrap.children);
+    matrix(wrap)
+    console.log('start show');
+    startShow()
+  }
+
+  function startShow() {
+    var n = 0, flag = false
+    setInterval(function () {
+      move(true)
+    }, 2000)
+
+    cell.addEventListener('transitionend', function () {
+      console.log('transitionend');
+      flag = false
+    })
+
+    function move(dis) {
+      if (flag) return
+      flag = true
+      if(dis){
+        n++
+      }else {
+        n--
+      }
+      cell.style.transform = 'rotateX(-30deg) rotateY('+(n*360/urlList.length)+'deg)'
+    }
+  }
+
+  function matrix(wrap) {
+    var children = wrap.children
+    var len = children.length
+    children[0].children[0].onload = function () {
+      var width = children[0].offsetWidth
+      var toDeg = Math.PI/180
+      var jiajiao = 360/len
+      var neijiao = 180 - jiajiao
+      var dis = Math.tan(neijiao/2*toDeg)*width/2
+      for (var i = 0; i < len; i++) {
+        children[i].style.transform = 'rotateY(-'+(i*jiajiao)+'deg) translateZ('+0+'px)'
+      }
+    }
+  }
+
+
+  function getUrl(num) {
+    var result = []
+    function getNum() {
+      var num = parseInt(Math.random()*16581375)
+      return num.toString(16)
+    }
+    for (var i = 1; i <= num; i++) {
+      result.push('https://dummyimage.com/960x600/'+getNum()+'/fff.png')
+    }
+    return result
+  }
+
+</script>
+
+</body>
+</html>

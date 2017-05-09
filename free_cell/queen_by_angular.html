@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    #list {
+      width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    #list li {
+      width: 12.5%;
+      height: 12.5%;
+      box-sizing: border-box;
+      border: 1px solid #7e8c8d;
+      float: left;
+    }
+    .checked {
+      background-color: #aaa;
+    }
+  </style>
+</head>
+<body ng-app="myApp" ng-controller="MyController">
+<ul id="list">
+  <li ng-repeat="cell in cellArr" ng-click="check()" ng-class="{checked: cell.isChecked}"></li>
+</ul>
+<<<<<<< HEAD
+
+<script src="https://cdn.bootcss.com/angular.js/1.5.5/angular.min.js"></script>
+
+
+=======
+<script src="https://cdn.bootcss.com/angular.js/1.5.5/angular.min.js"></script>
+>>>>>>> parent of b3dc330... Delete queen_by_angular.html
+<script type="text/javascript">
+  angular.module('myApp', [])
+      .controller('MyController', function ($scope) {
+        $scope.cellArr = []
+        $scope.deadCell = []
+        $scope.checkedNum = 0
+
+        // 初始化格子所对应的坐标
+        for (var i = 0; i < 64; i++) {
+          $scope.cellArr.push({
+            x: i % 8 + 1,
+            y: Math.floor(i / 8) + 1,
+            isChecked: false
+          })
+        }
+
+        // li点击逻辑
+        $scope.check = function () {
+          console.log(this.cell)
+          var cell = this.cell
+          var deadCell = $scope.deadCell
+          var x = cell.x, y = cell.y
+          var flag = true
+          console.log('x=' + x, 'y=' + y)
+
+          // 检查用户点击的格子是否在死亡数组中
+          for (var i = 0; i < deadCell.length; i++) {
+            var item = deadCell[i]
+            if (item.x === x && item.y === y) {
+              alert('dead')
+              flag = false
+              break
+            }
+          }
+
+          if (flag) {
+            // 记录用户添加的格子能吃到的格子
+            for (var i = 1; i < 9; i++) {
+              deadCell.push({x: i, y: y})// 同行
+              deadCell.push({x: x, y: i})// 同列
+              deadCell.push({x: i, y: x + y - i}) // 撇轴 => /
+              // 捺轴 => \
+              if (x>y){
+                var obj = {x: i, y: i-Math.abs(x-y)}
+                if (obj.y>0) {
+                  deadCell.push(obj)
+                }
+              }else {
+                var obj = {x: i, y: i+ Math.abs(x - y)}
+                if (obj.y<=8){
+                  deadCell.push(obj)
+                }
+              }
+            }
+            cell.isChecked = true
+            $scope.checkedNum += 1
+            if ($scope.checkedNum===8) {
+              alert('You Win !!')
+              location.reload()
+            }
+          }
+        }
+      })
+
+
+</script>
+</body>
+</html>

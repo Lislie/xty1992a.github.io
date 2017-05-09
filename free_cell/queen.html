@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    #list {
+      width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    #list li {
+      width: 12.5%;
+      height: 12.5%;
+      box-sizing: border-box;
+      border: 1px solid #7e8c8d;
+      float: left;
+    }
+  </style>
+</head>
+<body>
+
+<ul id="list"></ul>
+
+<script type="text/javascript">
+  var list = document.getElementById('list')
+  var deadCell = []
+  var checkedNum = 0
+  for (var i = 0; i < 64; i++) {
+    var cell = document.createElement('li')
+    cell.info = {
+      x: i % 8 + 1,
+      y: Math.floor(i / 8) + 1
+    }
+    list.appendChild(cell)
+  }
+  list.onclick = function (ev) {
+    if (ev.target.info) { // 点击的是li
+
+      var cell = ev.target
+      var info = cell.info
+      var x = info.x, y = info.y
+
+      var flag = true
+      console.log('x=' + x, 'y=' + y)
+
+      for (var i = 0; i < deadCell.length; i++) {
+        var item = deadCell[i]
+        if (item.x === x && item.y === y) {
+          alert('dead')
+          flag = false
+          break
+        }
+      }
+
+      if (flag) {
+        for (var i = 1; i < 9; i++) {
+          deadCell.push({x: i, y: y})
+          deadCell.push({x: x, y: i})
+          deadCell.push({x: i, y: x + y - i})
+//          deadCell.push({x: i, y: i - Math.abs(x-y)})
+          if (x>y) {
+            deadCell.push({x: i, y: i - Math.abs(x-y)})
+          } else {
+            deadCell.push({x: i, y: i + Math.abs(x-y)})
+          }
+//          if (x>y){
+//            var obj = {x: i, y: i-Math.abs(x-y)}
+//            if (obj.y>0) {
+//              deadCell.push(obj)
+//            }
+//          }else {
+//            var obj = {x: i, y: i+ Math.abs(x - y)}
+//            if (obj.y<=8){
+//              deadCell.push(obj)
+//            }
+//          }
+        }
+        checkedNum += 1
+        cell.style.background = '#7e8c8d'
+        if (checkedNum===8) {
+          alert('You Win !!!')
+          location.reload()
+        }
+      }
+    }
+  }
+
+
+</script>
+</body>
+</html>
