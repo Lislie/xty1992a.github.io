@@ -4,11 +4,14 @@
   <meta charset="UTF-8">
   <title>Title</title>
   <style>
+	body{
+		background-color: #f8f8f8;
+	}
     #wrap{
-      width: 960px;
-      height: 600px;
+      width: 480px;
+      height: 300px;
       position: relative;
-      margin: 0 auto;
+      margin: 200px auto 0;
       border: 1px solid lightblue;
     }
     #cell{
@@ -18,7 +21,6 @@
       transform-style: preserve-3d;
       transition: all 1s;
       position: relative;
-      /*transform: rotateX(30deg);*/
       height: 100%;
       width: 100%;
     }
@@ -30,38 +32,47 @@
     .card img{
       width: 100%;
     }
+	#btn{
+		position: absolute;
+		border: 0;
+		color: #fff;
+		padding: 15px;
+		outline: none;
+		z-index: 99;
+		border-radius: 10px;
+		top: 10px;
+		left: 10px;
+		font: bold 20px/25px 'Microsoft YaHei';
+		background: yellowgreen;
+	}
   </style>
 </head>
 <body>
-
-<div id="wrap">
+<button id="btn">点击倾斜</button>
+<div id="wrap" style="overflow: hidden">
   <ul id="cell"></ul>
 </div>
-
-<button id="btn">点击倾斜</button>
 <script type="text/javascript">
   var wrap = document.getElementById('wrap')
   var cell = document.getElementById('cell')
   var btn = document.getElementById('btn')
   var urlList = getUrl(6)
   var isRotate = false
+  
   put(cell, urlList)
-  wrap.style.overflow = 'hidden'
+
   btn.onclick = function () {
     isRotate = !isRotate
 	wrap.style.overflow = isRotate?'':'hidden'
   }
-
-
+  
   function put(wrap, urlList) {
     var htmlStr = ''
     for (var i = 0; i < urlList.length; i++) {
       htmlStr += '<li class="card"><img src="'+(urlList[i])+'"></li>'
     }
     wrap.innerHTML = htmlStr
-    console.log(wrap.children);
     matrix(wrap)
-    console.log('start show');
     startShow()
   }
 
@@ -70,7 +81,7 @@
     setInterval(function () {
       move(true)
     }, 2000)
-
+	
     cell.addEventListener('transitionend', function () {
       console.log('transitionend');
       flag = false
@@ -87,7 +98,6 @@
       cell.style.transform = transformStyle
     }
   }
-
 
   function matrix(wrap) {
     var children = wrap.children
@@ -112,12 +122,11 @@
       return num.toString(16)
     }
     for (var i = 1; i <= num; i++) {
-      result.push('https://dummyimage.com/960x600/'+getNum()+'/fff.png')
+      result.push('https://dummyimage.com/480x300/'+getNum()+'/fff.png')
     }
     return result
   }
 
 </script>
-
 </body>
 </html>
