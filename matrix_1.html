@@ -10,7 +10,6 @@
       position: relative;
       margin: 0 auto;
       border: 1px solid lightblue;
-      overflow: hidden;
     }
     #cell{
 	  margin: 0;
@@ -47,10 +46,10 @@
   var urlList = getUrl(6)
   var isRotate = false
   put(cell, urlList)
-
+  wrap.style.overflow = 'hidden'
   btn.onclick = function () {
     isRotate = !isRotate
-	wrap.style.overflow = isRotate?'hidden':none
+	wrap.style.overflow = isRotate?'':'hidden'
   }
 
 
